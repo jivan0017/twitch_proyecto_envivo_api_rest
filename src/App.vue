@@ -1,5 +1,14 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
+  import { RouterLink, RouterView } from 'vue-router'
+  import Navbar from './components/Navbar.vue';
+  import { ref } from 'vue';
+
+  let textValue = ref('')
+
+  function handleChange(value) {
+    console.log("from app ___ ", value);
+    textValue.value = value;
+  }
 </script>
 
 <template>
