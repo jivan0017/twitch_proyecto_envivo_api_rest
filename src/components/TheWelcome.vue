@@ -3,7 +3,17 @@
   import data from '../store-dummy/data.json';  
 
   // NOTE: definiciones
-  const urlApi = 'https://jsonplaceholder.typicode.com/posts';
+  // # Importar la url de la API en el caso de que no esté definida se usa la definida por defecto:
+  const urlApi = import.meta.env.VITE_API_URL_GETJSONPLACEHOLDER || 'https://jsonplaceholder.typicode.com/posts'
+
+  // # REST API Methods:
+  const apiMethod = {
+    GET: 'GET',
+    POST:'POST',
+    PUT: 'PUT',
+    DELETE: 'DELETE'
+  }
+
   //let posts = []; //<---- necesitamos que esta variable sea REACTIVA!!!!!
   let posts = ref([]); //<---- necesitamos que esta variable sea REACTIVA!!!!!
   let counter = ref(0);
@@ -20,7 +30,7 @@
   function getPosts () {
     // hago el llamado a la API de JSON placeholder
     fetch(urlApi, {
-      method: 'GET',
+      method: apiMethod.GET,
       headers: {
         'Content-Type': 'content/type'
       }
@@ -51,7 +61,6 @@
     <div class="row margin-top mt-4">
       <div class="col-sm-6 block1 card">
         <h2>Consumo de una API REST</h2>
-
         <h3> valor de los posts:</h3>
         <pre>
           {{ posts }}
@@ -64,19 +73,16 @@
           </div>
           <div class="col-sm-6">
             <span class="text-danger">Filtrar por el límite de posts que quiero visalizar</span>
-
+            <input 
+            type="number"
+            v-model="counter"
+            />                  
             inicio
             <input 
-              type="number"
-              v-model="counter"
-            />      
-
-            
-            limite
-            <input 
-              type="number"
-              v-model="limit"
+            type="number"
+            v-model="limit"
             />
+            límite
           </div>
           <div class="col-sm-12">
             <pre>{{ postsPaginados }}</pre>
@@ -84,6 +90,5 @@
         </div>        
       </div>
     </div>
-    
   </div>
 </template>

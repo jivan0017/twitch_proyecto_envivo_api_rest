@@ -1,11 +1,9 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
-
 </script>
 
 <template>
   <div>
-
     <nav class="navbar navbar-expand-lg bg-primary my-0" data-bs-theme="dark">
       <div class="container-fluid">
         <a class="navbar-brand text-white" href="#">Navbar</a>
@@ -36,9 +34,7 @@ import { RouterLink, RouterView } from 'vue-router'
         </div>
       </div>
     </nav>
-    
   </div>
-
   <RouterView />
 </template>
 
