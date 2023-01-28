@@ -2,10 +2,8 @@
 import TheWelcome from '../components/TheWelcome.vue'
 </script>
 
-<template>
+<template>  
   <main>
     <TheWelcome />
   </main>
 </template>
-
-
