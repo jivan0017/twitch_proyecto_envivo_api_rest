@@ -1,9 +1,9 @@
 <script setup>
-import TheWelcome from '../components/TheWelcome.vue'
+  import VistaResultadosAPIVue from '../components/VistaResultadosAPI.vue';
 </script>
 
 <template>  
   <main>
-    <TheWelcome />
+    <VistaResultadosAPIVue />
   </main>
 </template>

@@ -1,5 +1,5 @@
 <template>
-    <!-- BARRA PRINCIPAL DE NAVEGACIÓN  -->
+    <!-- BARRA PRINCIPAL DE NAVEGACIÓN  --> 
     <nav class="navbar navbar-expand-lg bg-primary my-0" data-bs-theme="dark">
       <div class="container-fluid">
         <a class="navbar-brand text-white" href="#">Navbar</a>
@@ -24,14 +24,15 @@
             </li>
           </ul>
           <div class="d-flex">
+
             <input 
-                @change="handleChange()"
+                @keyup="handleChange($event)"
                 v-model="searchText"
                 class="form-control me-2" 
                 type="search" 
                 placeholder="Search" >
-            <button 
-                @click="handleChange()"
+            <button
+                @click="handleChange($event)"
                 class="btn btn-outline-light" 
                 type="submit">
                 Buscar
@@ -42,15 +43,14 @@
     </nav>
 </template>
 
-<script setup>
+<script setup> // <--- inyectando el mecanismo de Coposition API
     let searchText = '';
 
     const emit = defineEmits(["handleChange"]);
 
-    function handleChange () {
-        // event.preventDefault();
-        
+    function handleChange (event) {        
         console.log("event >> ", event.target.value);
-        emit("handleChange", event.target.value)
+        // NOTE: palabra reservada para emitir eventos.
+        emit("handleChangeEmit", event.target.value);
     }
 </script>

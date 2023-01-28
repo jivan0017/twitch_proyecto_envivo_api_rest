@@ -21,16 +21,15 @@
   let limit = ref(10); // <--- solo me muetre 10 registros de todos los posts que trajo.
   let searchText = ref('');
   
-
+  // NOTE: texto del buscador propio del componente (NO ES EL NAVBAR)
   let textValueLocal = ref('');
+  
   // Hook que ejecuta código cuando se monta el componente
   onMounted(() => {
-    console.log("... se monta el componente y se ejecuta de acá para adelante lo propio..., valor externo.  ????? ", props.textValue);
+    console.log("onMounted...");
     getPosts();
   });
 
-  console.log("props: ", props);
-  console.log("props: ", props.textValue);
 
   // ANCHOR: Métodos
   // función que realiza el llamado a la API a través fetch
@@ -62,10 +61,16 @@
     return posts.value.slice(inicio, final);
   });
 
+  /**
+   * Busca Posts con la barra de búsqueda local <--- NO  la hemos separado aún del componente.
+   */
   function searchPost (e) {
-    postsTemporal.value = postsPaginados.value.filter((post) => {     
-      console.log("inner post  >>> ", post.title)
-      return post.title.includes(searchText.value)
+    console.info("event >> ", e.target.value);
+
+
+    postsTemporal.value = posts.value.filter((p) => {
+        // NOTE: palabra reservada (método) que devuelve/filtra coincidencias
+        return p.body.includes(e.target.value); // title, id.. por cualquier otro atributo.
     });
   }
 
@@ -74,17 +79,18 @@
 <template>
   <div class="container">
     <div class="row margin-top mt-4">
-      <div class="col-sm-6 block1 card">
+      <div class="col-sm-6 block1 card bloque1">
         <h2>Consumo de una API REST</h2>
         <h3> valor de los posts:</h3>
         <div class="col-12">
             <nav class="navbar navbar-light bg-light">
+
               <form class="form-inline w-100 d-flex">
                 <input 
                   @keyup="searchPost"
                   v-model="searchText"
                   class="form-control mr-sm-2"
-                  type="search" 
+                  type="text" 
                   placeholder="Search"
                   aria-label="Search">
                 <button 
@@ -93,13 +99,19 @@
                   type="submit">
                   Search
                 </button>
-                <!-- {{ postsPaginados.length }} -->
               </form>
             </nav>            
-          </div>        
-        <pre>
-          {{ postsTemporal }}
-        </pre>
+            <div class="row">
+                <div 
+                    class="col-4 card p-2" 
+                    v-for="post of postsTemporal">
+                    <span class="bg-primary text-white p-2">Titulo: {{ post.title.substr(0, 30) }}...</span>
+                    <span class="bg-secondary text-white p-2">Cuerpo del post: {{ post.body }}</span>
+                    <span class="id-post text-bold">{{ post.id }}</span>
+                </div>
+            </div>
+        </div>
+        
       </div>
       <div class="col-sm-6 card">
         <div class="row">
@@ -139,3 +151,28 @@
     </div>
   </div>
 </template>
+
+<style>
+    .bloque1 {
+        height: 650px!important;
+        overflow-y: scroll!important;
+    }
+    .id-post {
+        font-size: 24px;
+        font-weight: bold;
+        padding: 5px;
+        border: 5px solid grey;
+        display: flex;
+        width: 50px;
+        align-items: center;
+        justify-content: center;
+        height: 50px;
+        border-radius: 50%;
+        position: relative;
+        left: 50%;
+        transform: translateX(-50%);
+        top: 0.75rem;
+        box-shadow: 0px 0px 12px 3px rgb(0 0 0 / 20%);
+        margin-bottom: 1rem;
+    }
+</style>
