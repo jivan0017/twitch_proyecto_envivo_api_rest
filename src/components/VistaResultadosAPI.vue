@@ -1,6 +1,10 @@
 <script setup>
-  import { ref, onMounted, computed } from 'vue'
+  import { ref, onMounted, computed, watch } from 'vue'
   import data from '../store-dummy/data.json';  
+  
+  import { useSearchStore } from '../store/useSearchElements';
+  const storeTextSearch = useSearchStore();
+
 
   // NOTE: definiciones
   // # Importar la url de la API en el caso de que no esté definida se usa la definida por defecto:
@@ -20,16 +24,14 @@
   let counter = ref(0);
   let limit = ref(10); // <--- solo me muetre 10 registros de todos los posts que trajo.
   let searchText = ref('');
-  
-  // NOTE: texto del buscador propio del componente (NO ES EL NAVBAR)
-  let textValueLocal = ref('');
+
   
   // Hook que ejecuta código cuando se monta el componente
   onMounted(() => {
-    console.log("onMounted...");
+    console.log("onMounted...", storeTextSearch.text);
     getPosts();
   });
-
+  
 
   // ANCHOR: Métodos
   // función que realiza el llamado a la API a través fetch
@@ -57,23 +59,31 @@
   let postsPaginados = computed(() => {
     const inicio = counter.value * limit.value;
     const final    = inicio + limit.value;           // <----  0 => 10 (10),   10 => 15 (5) ..
+    const len = storeTextSearch.text.length
 
-    return posts.value.slice(inicio, final);
+    return posts.value.slice(counter.value <= 0 ? 1 : counter.value -1 , limit.value);
   });
 
   /**
    * Busca Posts con la barra de búsqueda local <--- NO  la hemos separado aún del componente.
    */
-  function searchPost (e) {
-    console.info("event >> ", e.target.value);
-
-
-    postsTemporal.value = posts.value.filter((p) => {
+  function searchPost (text) {
+    postsPaginados =  postsTemporal.value = posts.value.filter((p) => {
         // NOTE: palabra reservada (método) que devuelve/filtra coincidencias
-        return p.body.includes(e.target.value); // title, id.. por cualquier otro atributo.
+        return p.body.includes(text); // title, id.. por cualquier otro atributo.
     });
+
   }
 
+  watch(
+    storeTextSearch, (newValue, oldValue) => {
+      console.log("watch >>> ", newValue.text)
+      searchText.value = newValue.text
+      // if (newValue.text) {
+      searchPost(newValue.text);
+      // }
+    }
+  )
 </script>
 
 <template>
@@ -83,12 +93,11 @@
         <h2>Consumo de una API REST</h2>
         <h3> valor de los posts:</h3>
         <div class="col-12">
-            <nav class="navbar navbar-light bg-light">
-
+            <!-- <nav class="navbar navbar-light bg-light">
               <form class="form-inline w-100 d-flex">
                 <input 
                   @keyup="searchPost"
-                  v-model="searchText"
+                  v-model="storeTextSearch.text"
                   class="form-control mr-sm-2"
                   type="text" 
                   placeholder="Search"
@@ -100,7 +109,7 @@
                   Search
                 </button>
               </form>
-            </nav>            
+            </nav>             -->
             <div class="row">
                 <div 
                     class="col-4 card p-2" 

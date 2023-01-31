@@ -24,15 +24,15 @@
             </li>
           </ul>
           <div class="d-flex">
-
+            <!-- searchText -->
             <input 
-                @keyup="handleChange($event)"
-                v-model="searchText"
+                @keyup="handleChange()"
+                v-model="textoModel"
                 class="form-control me-2" 
                 type="search" 
                 placeholder="Search" >
             <button
-                @click="handleChange($event)"
+                @click.prevent="handleChange()"
                 class="btn btn-outline-light" 
                 type="submit">
                 Buscar
@@ -44,13 +44,20 @@
 </template>
 
 <script setup> // <--- inyectando el mecanismo de Coposition API
-    let searchText = '';
+  import { useSearchStore } from '../store/useSearchElements';
+  import { ref, onMounted } from 'vue'
 
-    const emit = defineEmits(["handleChange"]);
+  const storeTextSearch = useSearchStore();
+  const emit = defineEmits(["handleChange"]);
+  let textoModel = ref('');
 
-    function handleChange (event) {        
-        console.log("event >> ", event.target.value);
-        // NOTE: palabra reservada para emitir eventos.
-        emit("handleChangeEmit", event.target.value);
-    }
+  function handleChange () {        
+      console.log("texto model >> ", textoModel.value);
+      // NOTE: palabra reservada para emitir eventos.
+      storeTextSearch.text = textoModel.value;
+  }
+
+  onMounted(() => {
+    handleChange();
+  })
 </script>

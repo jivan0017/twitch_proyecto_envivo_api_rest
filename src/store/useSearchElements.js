@@ -1,17 +1,14 @@
 import { defineStore } from "pinia";
 
-const searchText = '817';
-
-export const useSearchElements = defineStore("searchElements", {
+export const useSearchStore = defineStore({
+    id: 'search',
     state: () => ({
-        searchElements: [...searchText]
+        text: 'default',
+        name: 'search'
     }),
-    getters: {
-        nameSearchElements: (state) => state.searchElements,
-    },
     actions: {
-        addSearchElement(searchText) {
-            this.searchElements = searchText
+        setText(text) {
+            this.text = text;
         }
     }
 })

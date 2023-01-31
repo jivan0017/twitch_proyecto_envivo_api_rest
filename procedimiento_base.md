@@ -31,7 +31,7 @@ npm run dev
 
 # EXTENSIONES VS CODE
 -buscar volar en las extensiones como VUE
-Volar (V3)
+Volar (V3) 
 Vetur (V2)
 
 - Buscarla con el signo pluss
@@ -81,6 +81,8 @@ createApp(App)
 - al final de todo:
 // TODO: agregar
 import "bootstrap/dist/js/bootstrap.min";
+
+npm install -D sass
 
 
 # INSTANALDO ROUTER
