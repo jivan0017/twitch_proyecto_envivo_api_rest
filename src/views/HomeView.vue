@@ -1,10 +1,10 @@
 <script setup>
-import TheWelcome from '../components/TheWelcome.vue'
+import ResultadosApi from '../components/ResultadosApi.vue';
 </script>
 
 <template>
   <main>
-    <TheWelcome />
+    <ResultadosApi></ResultadosApi>
   </main>
 </template>
 
